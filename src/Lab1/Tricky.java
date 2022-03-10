@@ -1,3 +1,5 @@
+package Lab1;
+
 public class Tricky {
     public static void main(String[] args) {
         System.out.println("Hello world");
