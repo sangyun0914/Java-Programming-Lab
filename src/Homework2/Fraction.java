@@ -16,7 +16,6 @@ public class Fraction {
      * Two Argument Constructor
      * 
      * @param numerator
-     * 
      * @param denominator
      */
     public Fraction(int numerator, int denominator) {
@@ -36,7 +35,6 @@ public class Fraction {
      * Adds two Fraction values
      * 
      * @param fraction Another Fraction to be added
-     * 
      * @return newFrac New Fraction object by adding the parameter
      */
     public Fraction add(Fraction fraction) {
@@ -50,7 +48,6 @@ public class Fraction {
      * Subtracts two Fraction values
      * 
      * @param fraction Another Fraction to be subtracted
-     * 
      * @return newFrac New Fraction object by subtracting the parameter
      */
     public Fraction subtract(Fraction fraction) {
@@ -64,7 +61,6 @@ public class Fraction {
      * Multiplies two Fraction values
      * 
      * @param fraction Another Fraction to be multiplied
-     * 
      * @return newFrac New Fraction object by multiplying parameter
      */
     public Fraction multiply(Fraction fraction) {
@@ -78,7 +74,6 @@ public class Fraction {
      * Divdes two Fraction values
      * 
      * @param fraction Another Fraction to be divisor
-     * 
      * @return newFrac New Fraction object by dividing by parameter
      */
     public Fraction divide(Fraction fraction) {
@@ -122,9 +117,7 @@ public class Fraction {
      * Finds Greatest Common Divisor Euclidean Algorithm
      * 
      * @param num1
-     * 
      * @param num2
-     * 
      * @return num1
      */
     private static int GCD(int num1, int num2) {
@@ -143,9 +136,7 @@ public class Fraction {
      * Finds Least Common Multiple
      * 
      * @param num1
-     * 
      * @param num2
-     * 
      * @return num1 * num2 / GCD LCM
      */
     private static int LCM(int num1, int num2) {
