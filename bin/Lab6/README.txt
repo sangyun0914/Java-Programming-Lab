@@ -1,0 +1,1 @@
+All java files in the same package(folder) "Lab6"
