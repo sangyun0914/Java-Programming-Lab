@@ -1,4 +1,4 @@
-package Lab8;
+package Homework5;
 
 import java.awt.EventQueue;
 
@@ -20,6 +20,7 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.event.ListSelectionListener;
 import javax.swing.event.ListSelectionEvent;
+import javax.swing.JScrollPane;
 
 @SuppressWarnings("serial")
 public class Calculator extends JFrame implements ActionListener {
@@ -32,6 +33,7 @@ public class Calculator extends JFrame implements ActionListener {
     private String operator;
     private DefaultListModel<String> listData;
     private JTextField textField;
+    final JList<String> list;
 
     /**
      * Launch the application.
@@ -56,8 +58,10 @@ public class Calculator extends JFrame implements ActionListener {
     public Calculator() {
         num1 = NONE;
         num2 = NONE;
+        res = NONE;
         operator = NONE;
         listData = new DefaultListModel<String>();
+
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setBounds(100, 100, 450, 300);
         contentPane = new JPanel();
@@ -151,12 +155,13 @@ public class Calculator extends JFrame implements ActionListener {
         button_18.addActionListener(this);
         button_19.addActionListener(this);
 
-        JPanel panel_1 = new JPanel();
-        panel_1.setBounds(326, 41, 96, 210);
-        contentPane.add(panel_1);
-        panel_1.setLayout(new GridLayout(0, 1, 0, 0));
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setBounds(326, 41, 96, 210);
+        contentPane.add(scrollPane);
 
-        JList<String> list = new JList<String>(listData);
+        list = new JList<String>(listData);
+        scrollPane.setViewportView(list);
+        list.ensureIndexIsVisible(list.getSelectedIndex());
         list.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent arg0) {
                 // get the object on which the event occurred
@@ -171,7 +176,6 @@ public class Calculator extends JFrame implements ActionListener {
                 }
             }
         });
-        panel_1.add(list);
 
         textField = new JTextField();
         textField.addKeyListener(new KeyAdapter() {
@@ -181,9 +185,10 @@ public class Calculator extends JFrame implements ActionListener {
                 if (c >= '0' && c <= '9') {
                     // textField.setText(textField.getText() + c);
                 } else if (c == '+' || c == '-' || c == '*' || c == '/') {
-                    if (num1 == NONE) {
+                    if (num1 == NONE || textField.getText() != res) {
                         num1 = textField.getText();
                         listData.addElement(num1);
+                        list.ensureIndexIsVisible(list.getModel().getSize() - 1);
                         textField.setText("");
                     } else if (textField.getText().equals("")) {
 
@@ -193,6 +198,7 @@ public class Calculator extends JFrame implements ActionListener {
                         res = doMath(num1, String.valueOf(c), num2);
                         listData.addElement(operator);
                         listData.addElement(num2);
+                        list.ensureIndexIsVisible(list.getModel().getSize() - 1);
                         num1 = res;
                         num2 = "";
                     }
@@ -208,11 +214,13 @@ public class Calculator extends JFrame implements ActionListener {
                     textField.setText(res);
                     listData.addElement("=");
                     listData.addElement(res);
+                    list.ensureIndexIsVisible(list.getModel().getSize() - 1);
                     operator = "=";
                     e.consume();
                 } else {
                     e.consume();
                 }
+
             }
         });
         textField.setBounds(12, 10, 410, 21);
@@ -229,13 +237,14 @@ public class Calculator extends JFrame implements ActionListener {
             textField.setText(textField.getText() + s);
         }
         // Check if the button is operator
-        else if (s.equals("+") || s.equals("-") || s.equals("*")
-                || s.equals("/")) {
-            if (num1 == NONE) {
+        else if (s.equals("+") || s.equals("-") || s.equals("*") || s.equals("/")) {
+            if (num1 == NONE || (!textField.getText().equals("") && (textField.getText() != res) && (res != NONE))) {
                 num1 = textField.getText();
                 listData.addElement(num1);
+                list.ensureIndexIsVisible(list.getModel().getSize() - 1);
                 textField.setText("");
             } else if (textField.getText().equals("")) {
+                operator = s;
 
             } else {
                 num2 = textField.getText();
@@ -243,6 +252,7 @@ public class Calculator extends JFrame implements ActionListener {
                 res = doMath(num1, operator, num2);
                 listData.addElement(operator);
                 listData.addElement(num2);
+                list.ensureIndexIsVisible(list.getModel().getSize() - 1);
                 num1 = res;
                 num2 = "";
             }
@@ -257,6 +267,8 @@ public class Calculator extends JFrame implements ActionListener {
             textField.setText(res);
             listData.addElement(s);
             listData.addElement(res);
+            list.ensureIndexIsVisible(list.getModel().getSize() - 1);
+
             operator = s;
         } else if (s.equals("C")) {
             num1 = NONE;
@@ -265,11 +277,12 @@ public class Calculator extends JFrame implements ActionListener {
             textField.setText("");
 
         } else if (s.equals("CE")) {
+            DefaultListModel<String> listModel = (DefaultListModel<String>) list.getModel();
+            listModel.removeAllElements();
             textField.setText("");
             num1 = NONE;
             num2 = "";
             operator = "";
-            listData.removeAllElements();
         }
     }
 
